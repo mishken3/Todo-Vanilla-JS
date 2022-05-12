@@ -31,6 +31,12 @@ modalOverlay.append(modalDelete);
 document.body.prepend(modalOverlay);
 
 taskList.addEventListener('click', (event) => {
+  /** TODO: функция срабатывает на абсолютно каждый клик внутри taskList
+   * и весь код внури тоже срабатывает на каждый клик
+   *
+   * нас интересует только клик на кнопку удаления
+   * вначале обработчика нужно добавить проверку на соотвествие этой кнопки
+   * **/
   const deleteBtns = [...document.querySelectorAll('.delete-button')];
   if (!deleteBtns.includes(event.target)) return;
 

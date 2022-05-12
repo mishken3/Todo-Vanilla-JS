@@ -1,5 +1,8 @@
 'use strict';
 
+/** TODO: можно так создавать элементы, а можно создавать html элементы в виде строк
+ * и вставлять их с помощью insertAdjacentHTML
+ * **/
 const createTaskElement = (task) => {
   const taskItem = document.createElement('div');
   taskItem.classList.add('task-item');
@@ -46,6 +49,9 @@ const createTaskElement = (task) => {
 
 const createTask = (text, id = Date.now(), completed = false) => {
   const stringId = String(id);
+  /** TODO: Мелочный момент. Если переменная создается и использутеся только один раз для возврата,
+   *  то можно её и не создавать
+   *  return { id: stringId, completed, text } **/
   const task = { id: stringId, completed, text };
   return task;
 };
@@ -62,6 +68,7 @@ newTaskForm.addEventListener('submit', (event) => {
   const errBlock = document.querySelector('.error-message-block');
   if (errBlock !== null) errBlock.remove();
 
+  /** TODO: утилиты лучше вынести в отдельный файл **/
   const isUniqTask = (newTaskText) =>
     tasks.every(({ text }) => newTaskText !== text);
 
@@ -82,4 +89,5 @@ newTaskForm.addEventListener('submit', (event) => {
   }
 });
 
+/** TODO: неявный импорт файла script.js - лучше import/export es6 **/
 tasks.forEach((task) => taskList.append(createTaskElement(task)));
