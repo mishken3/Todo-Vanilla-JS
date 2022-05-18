@@ -14,7 +14,4 @@ const changeTheme = () => {
   buttons.forEach((button) => button.classList.toggle('button-dark'));
 };
 
-const checkbox = document.getElementById('checkbox');
-checkbox.addEventListener('change', () => {
-  changeTheme();
-});
+export { changeTheme };

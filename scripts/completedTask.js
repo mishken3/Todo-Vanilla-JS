@@ -1,5 +1,9 @@
 'use strict';
 
+import { tasks } from './data.js';
+
+const taskList = document.querySelector('.tasks-list');
+
 taskList.addEventListener('change', (event) => {
   const status = event.target.checked;
   const taskItem = event.target.closest('.task-item');

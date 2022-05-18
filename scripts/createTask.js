@@ -1,59 +1,37 @@
 'use strict';
 
-/** TODO: можно так создавать элементы, а можно создавать html элементы в виде строк
- * и вставлять их с помощью insertAdjacentHTML
- * **/
+import * as Utils from './utils.js';
+import { tasks } from './data.js';
+
 const createTaskElement = (task) => {
   const taskItem = document.createElement('div');
   taskItem.classList.add('task-item');
   taskItem.dataset.taskId = task.id;
 
-  const taskItemContainer = document.createElement('div');
-  taskItemContainer.classList.add('task-item__main-container');
+  const taskItemHTML = `
+    <div class="task-item__main-container">
+      <div class="task-item__main-content">
+        <form class="checkbox-form">
+          <input class="checkbox-form__checkbox" type="checkbox" id="task-${task.id}">
+          <label for="task-${task.id}"></label>
+        </form>
+        <span class="task-item__text">
+          ${task.text}
+        </span>
+      </div>
+      <button class="task-item__delete-button default-button delete-button" data-delete-task-id=${task.id}>
+        Удалить
+      </button>
+    </div>
+  `;
 
-  const taskItemContent = document.createElement('div');
-  taskItemContent.classList.add('task-item__main-content');
-
-  const checkboxForm = document.createElement('form');
-  checkboxForm.classList.add('checkbox-form');
-
-  const inputFrom = document.createElement('input');
-  inputFrom.classList.add('checkbox-form__checkbox');
-  inputFrom.type = 'checkbox';
-  inputFrom.id = `task-${task.id}`;
-
-  const labelForm = document.createElement('label');
-  labelForm.htmlFor = `task-${task.id}`;
-  checkboxForm.append(inputFrom, labelForm);
-
-  const taskItemText = document.createElement('span');
-  taskItemText.classList.add('task-item__text');
-  taskItemText.textContent = task.text;
-
-  taskItemContent.append(checkboxForm, taskItemText);
-
-  const deleteButton = document.createElement('button');
-  deleteButton.classList.add(
-    'task-item__delete-button',
-    'default-button',
-    'delete-button'
-  );
-  deleteButton.dataset.deleteTaskId = task.id;
-  deleteButton.textContent = 'Удалить';
-
-  taskItemContainer.append(taskItemContent, deleteButton);
-  taskItem.append(taskItemContainer);
-
+  taskItem.insertAdjacentHTML('afterbegin', taskItemHTML);
   return taskItem;
 };
 
 const createTask = (text, id = Date.now(), completed = false) => {
   const stringId = String(id);
-  /** TODO: Мелочный момент. Если переменная создается и использутеся только один раз для возврата,
-   *  то можно её и не создавать
-   *  return { id: stringId, completed, text } **/
-  const task = { id: stringId, completed, text };
-  return task;
+  return { id: stringId, completed, text };
 };
 
 const createErrorMessage = (errText) => {
@@ -68,14 +46,10 @@ newTaskForm.addEventListener('submit', (event) => {
   const errBlock = document.querySelector('.error-message-block');
   if (errBlock !== null) errBlock.remove();
 
-  /** TODO: утилиты лучше вынести в отдельный файл **/
-  const isUniqTask = (newTaskText) =>
-    tasks.every(({ text }) => newTaskText !== text);
-
   event.preventDefault();
   const inputText = event.target.taskName.value;
 
-  if (!isUniqTask(inputText)) {
+  if (!Utils.isUniqTask(inputText)) {
     const errBlock = createErrorMessage('Задача с таким названием уже есть.');
     newTaskForm.append(errBlock);
   } else if (inputText === '') {
@@ -85,9 +59,10 @@ newTaskForm.addEventListener('submit', (event) => {
     const newTask = createTask(inputText);
     tasks.push(newTask);
     const newTaskElement = createTaskElement(newTask);
+
+    const taskList = document.querySelector('.tasks-list');
     taskList.append(newTaskElement);
   }
 });
 
-/** TODO: неявный импорт файла script.js - лучше import/export es6 **/
-tasks.forEach((task) => taskList.append(createTaskElement(task)));
+export { createTaskElement };

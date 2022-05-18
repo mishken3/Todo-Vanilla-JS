@@ -1,33 +1,18 @@
 'use strict';
 
-/** TODO: можно вынести в отдельный файл data.js **/
-const tasks = [
-  {
-    id: '1138465078061',
-    completed: false,
-    text: 'React',
-  },
-  {
-    id: '1138465078062',
-    completed: false,
-    text: 'Redux',
-  },
-  {
-    id: '1138465078063',
-    completed: false,
-    text: 'Немного отдохнуть...',
-  },
-];
+import { tasks } from './scripts/data.js';
+import { createTaskElement } from './scripts/createTask.js';
+import { modalDeleteHandler } from './scripts/modalDelete.js';
+import { changeTheme } from './scripts/darkTheme.js';
 
 const taskList = document.querySelector('.tasks-list');
+taskList.addEventListener('click', (event) => modalDeleteHandler(event));
 
+tasks.forEach((task) => taskList.append(createTaskElement(task)));
 
-/** TODO: подытог
- * правки, которые прописал - не критичны
- *
- * видно, что старался, код написан аккуратно и понятно, количество логики в приложении тоже радует - мне нравится!
- * пиздуй уже на работу! ❤️
- *
- * А если серьёзно, то было бы круто все подключить в один js файл и основную логику прописать там
- * а всё остальное так же было бы разделено по файлам. Если будет время, то вторым коммитом покажу как именно
+const checkbox = document.getElementById('checkbox');
+checkbox.addEventListener('change', () => changeTheme());
+
+/**
+ * ❤️
  * **/
