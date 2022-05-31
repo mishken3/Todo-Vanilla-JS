@@ -4,12 +4,15 @@
   "description": "Simple todo list on vanilla js",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild script.js --bundle --outfile=out.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "esbuild": "^0.14.42",
+    "lodash": "^4.17.21",
     "surge": "^0.23.1"
   }
 }
