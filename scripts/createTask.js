@@ -2,6 +2,7 @@
 
 import * as Utils from './utils.js';
 import { tasks } from './data.js';
+import { addTaskToLocalStorage } from './localTasks.js';
 
 const createTaskElement = (task) => {
 	const taskItem = document.createElement('div');
@@ -31,7 +32,10 @@ const createTaskElement = (task) => {
 
 const createTask = (text, id = Date.now(), completed = false) => {
 	const stringId = String(id);
-	return { id: stringId, completed, text };
+	const task = { id: stringId, completed, text };
+	addTaskToLocalStorage(task);
+
+	return task;
 };
 
 const createErrorMessage = (errText) => {
