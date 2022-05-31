@@ -4,11 +4,11 @@ import * as Utils from './utils.js';
 import { tasks } from './data.js';
 
 const createTaskElement = (task) => {
-  const taskItem = document.createElement('div');
-  taskItem.classList.add('task-item');
-  taskItem.dataset.taskId = task.id;
+	const taskItem = document.createElement('div');
+	taskItem.classList.add('task-item');
+	taskItem.dataset.taskId = task.id;
 
-  const taskItemHTML = `
+	const taskItemHTML = `
     <div class="task-item__main-container">
       <div class="task-item__main-content">
         <form class="checkbox-form">
@@ -25,44 +25,47 @@ const createTaskElement = (task) => {
     </div>
   `;
 
-  taskItem.insertAdjacentHTML('afterbegin', taskItemHTML);
-  return taskItem;
+	taskItem.insertAdjacentHTML('afterbegin', taskItemHTML);
+	return taskItem;
 };
 
 const createTask = (text, id = Date.now(), completed = false) => {
-  const stringId = String(id);
-  return { id: stringId, completed, text };
+	const stringId = String(id);
+	return { id: stringId, completed, text };
 };
 
 const createErrorMessage = (errText) => {
-  const errorSpan = document.createElement('span');
-  errorSpan.classList.add('error-message-block');
-  errorSpan.textContent = errText;
-  return errorSpan;
+	const errorSpan = document.createElement('span');
+	errorSpan.classList.add('error-message-block');
+	errorSpan.textContent = errText;
+	return errorSpan;
 };
 
 const newTaskForm = document.querySelector('.create-task-block');
+
 newTaskForm.addEventListener('submit', (event) => {
-  const errBlock = document.querySelector('.error-message-block');
-  if (errBlock !== null) errBlock.remove();
+	const errBlock = document.querySelector('.error-message-block');
+	if (errBlock !== null) errBlock.remove();
 
-  event.preventDefault();
-  const inputText = event.target.taskName.value;
+	event.preventDefault();
+	const inputText = event.target.taskName.value;
 
-  if (!Utils.isUniqTask(inputText)) {
-    const errBlock = createErrorMessage('Задача с таким названием уже есть.');
-    newTaskForm.append(errBlock);
-  } else if (inputText === '') {
-    const errBlock = createErrorMessage('Название не должно быть пустым.');
-    newTaskForm.append(errBlock);
-  } else {
-    const newTask = createTask(inputText);
-    tasks.push(newTask);
-    const newTaskElement = createTaskElement(newTask);
+	if (!Utils.isUniqTask(inputText)) {
+		const errBlock = createErrorMessage('Задача с таким названием уже есть.');
+		newTaskForm.append(errBlock);
+	} else if (inputText === '') {
+		const errBlock = createErrorMessage('Название не должно быть пустым.');
+		newTaskForm.append(errBlock);
+	} else {
+		const newTask = createTask(inputText);
+		tasks.push(newTask);
+		const newTaskElement = createTaskElement(newTask);
 
-    const taskList = document.querySelector('.tasks-list');
-    taskList.append(newTaskElement);
-  }
+		const taskList = document.querySelector('.tasks-list');
+		taskList.append(newTaskElement);
+
+		event.target.taskName.value = null;
+	}
 });
 
 export { createTaskElement };
